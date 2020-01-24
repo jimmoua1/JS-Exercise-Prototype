@@ -48,14 +48,14 @@ function Person(name, age) {
 Person.prototype.eat = function(someFood) {
   if (this.stomach.length < 10) {
     this.stomach.push(someFood);
-  }  
+  }
 };
 
 Person.prototype.poop = function() {
   return (this.stomach = []);
 };
 
-Person.prototype.toString = function(){
+Person.prototype.toString = function() {
   return this.name + ", " + this.age;
 };
 
@@ -74,9 +74,30 @@ Person.prototype.toString = function(){
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car(mode, milesPerGallon) {
+
+function Car(model, milesPerGallon) {
   this.model = model,
-  this.milesPerGallon = 
+  this.milesPerGallon = milesPerGallon,
+  this.tank =  0,
+  this.odometer = 0
+}
+
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function (distance) {
+  var tripFuel = distance/this.milesPerGallon
+  if (this.tank >= tripFuel){
+    this.odometer += distance;
+  } else {
+    this.odometer += this.tank * this.milesPerGallon;
+  }
+  this.tank = this.tank - tripFuel;
+  if (this.tank <= 0){
+    this.tank = 0;
+    return "I ran out of fuel at " + this.odometer + " miles";
+  };
 }
 
 /*
@@ -86,18 +107,27 @@ function Car(mode, milesPerGallon) {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
 
+Baby.prototype = Object.create(Person.prototype);
+function Baby(name, age, favoriteToy) {
+  this.name = name;
+  this.age = age;
+  this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype.play = function (){
+  return "Playing with " + this.favoriteToy;
+}
+
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Global Binding will refer back to the parent object of everything
+  2. Implicit Binding will whenever a preceding dot calls a function, the object before the dot is this
+  3. New Binding will refers to the specific instance of the object that is created and returned by the constructor function.
+  4. Explicit Binding will refer back to what is passed in the parenthesis but for a specific method
 */
 
 
